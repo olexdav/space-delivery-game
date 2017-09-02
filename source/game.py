@@ -37,17 +37,19 @@ class Game:
 
     def __init__(self, fps=60):
         self.fps = fps
-        self.clock = pygame.time.Clock() # Clock to keep track of time
+        self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
         self.player = None
 
     # Initializes everything and starts main game loop
     def run(self):
-        self.init_pygame()
-        self.create_window()
-        self.show_loading_screen()
-        self.init()
-        self.main_loop()
+        self.init_pygame()          # Initialize engine
+        self.create_window()        # Create app window
+        self.show_loading_screen()  # Show splash screen
+        self.init()                 # Load game
+        self.main_loop()            # The grand loop
+        pygame.quit()               # Exit game
+        sys.exit()
 
     # Creates a pygame window
     def create_window(self):
@@ -59,8 +61,9 @@ class Game:
 
     # Initializes things that are global in the scope of the game
     def init(self):
-        self.player = Player() # Load player
-        self.world = World() # Create world
+        self.player = Player()  # Load player
+        self.world = World()  # Create world
+        self.world.add_collidable(self.player.car)  # Add player to the world
 
     # Initializes pygame
     def init_pygame(self):
@@ -74,12 +77,30 @@ class Game:
     # Runs the game frame by frame
     def main_loop(self):
         while not pygame.event.peek(pygame.QUIT):
-            pass # Update current state
-            self.window.fill((130, 200, 100)) # Draw background
-            self.window.draw(self.player.car.sprite, (0,0)) # Draw player
-            self.window.update() # Update the window
-            pass # Update physics
+            pass  # Update current state
+            self.handle_input()  # Handle input
+            self.world.update(self.fps)  # Update world (physics, etc.)
+            self.render() # Draw everything
             self.clock.tick(self.fps)  # Limit fps
             # Show current fps in the window title
             pygame.display.set_caption("space-delivery-game {ver} fps: {fps}".format(ver=GAME_VERSION,
                                                                                     fps=str(int(self.clock.get_fps()))))
+
+    # Handles all input
+    def handle_input(self):
+        for event in pygame.event.get():
+            if event.type is pygame.KEYDOWN:
+                if event.key is ord('w'):    # Accelerate
+                    self.player.accelerate()
+                elif event.key is ord('s'):  # Decelerate
+                    self.player.decelerate()
+                elif event.key is ord('a'):  # Steer left
+                    self.player.steer_left()
+                elif event.key is ord('d'):  # Steer right
+                    self.player.steer_right()
+
+    # Renders everything
+    def render(self):
+        self.window.fill((130, 200, 100))  # Draw background
+        self.window.draw_collidable(self.player.car)  # Draw player
+        self.window.update()  # Update the window

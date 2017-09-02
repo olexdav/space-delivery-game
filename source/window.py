@@ -20,15 +20,17 @@
 
 try:
     import pygame
+    import math  # Need this for math.degrees()
     import sys
     from camera import Camera
+    #from collidable import Collidable
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
 class Window():
     """
-    Class that handles window creation, resizing and rendering
+    Class that handles window creation, resizing and rendering of various objects
     """
 
     def __init__(self, width=800, height=600, caption="untitled", flags=0, icon=None):
@@ -46,9 +48,9 @@ class Window():
 
     # Draws a sprite onto the screen
     def draw(self, sprite, world_coordinates):
-        x, y = self.camera.world_to_viewport(world_coordinates) # Convert coordinates to viewport
-        x -= sprite.get_width()/2 # Align coordinates
-        y -= sprite.get_height()/2 # so the sprite's pivot is centered
+        x, y = self.camera.world_to_viewport(world_coordinates)  # Convert coordinates to viewport
+        x -= sprite.get_width()/2   # Align coordinates
+        y -= sprite.get_height()/2  # so the sprite's pivot is centered
         self.screen.blit(sprite, (x,y))
 
     def update(self):
@@ -71,3 +73,14 @@ class Window():
     # Changes resolution of the window
     def change_resolution(self, width, height):
         pass
+
+    # Draws a collidable
+    def draw_collidable(self, collidable):
+        # TODO: only draw collidables that are close to the viewport
+        angle_degrees = math.degrees(-collidable.body.angle)                # Get sprite's direction
+        sprite = pygame.transform.rotate(collidable.sprite, angle_degrees)  # Rotate the sprite
+        self.draw(sprite, collidable.get_position())                        # Draw the sprite
+        # DEBUG: draw center of the collidable
+        coord = self.camera.world_to_viewport(collidable.get_position())
+        pygame.draw.circle(self.screen, pygame.Color(255, 255, 255, 255),
+                           coord, 5, 0)

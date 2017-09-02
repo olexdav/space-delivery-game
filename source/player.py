@@ -19,8 +19,8 @@
 """
 
 try:
-    from collidable import Collidable
     import sys
+    from collidable import Collidable
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
@@ -37,3 +37,23 @@ class Player:
                               density=1,
                               body_type='dynamic',
                               shape_type='box')
+
+    # Accelerates the car forward
+    def accelerate(self):
+        self.car.body.apply_impulse_at_local_point(impulse=(0, -1000000), point=(0, 0))
+
+    # Decelerates the car
+    def decelerate(self):
+        self.car.body.apply_impulse_at_local_point(impulse=(0, 1000000), point=(0, 0))
+        # TODO: make sure the car's velocity never drops below zero (no backpedaling)
+
+    # Steers the car to the right
+    def steer_right(self):
+        self.car.body.apply_impulse_at_local_point(impulse=(100000, 0), point=(0, -70))
+        self.car.body.apply_impulse_at_local_point(impulse=(-100000, 0), point=(0, 70))
+
+    # Steers the car to the left
+    def steer_left(self):
+        self.car.body.apply_impulse_at_local_point(impulse=(-100000, 0), point=(0, -70))
+        self.car.body.apply_impulse_at_local_point(impulse=(100000, 0), point=(0, 70))
+

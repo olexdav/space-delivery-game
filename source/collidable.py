@@ -19,8 +19,8 @@
 """
 
 try:
-    import pygame
-    import pymunk # TEMP
+    import pygame  # Need this for pygame.image.load()
+    import pymunk
     import sys
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
@@ -32,17 +32,15 @@ class Collidable:
     """
 
     def __init__(self, image_dir, x=0, y=0, density=1, body_type='dynamic', shape_type='box'):
-        self.x = x
-        self.y = y
-        self.sprite = pygame.image.load(image_dir).convert_alpha()
+        self.sprite = pygame.image.load(image_dir).convert_alpha()  # Surface with the collidable's image
         self.body = None
-        self.set_body(x, y, density, body_type, shape_type)
+        self.set_body(x, y, density, body_type, shape_type)  # Physical body
         self.shape = None
-        self.set_shape(shape_type)
+        self.set_shape(shape_type)  # Shape of the body
 
     # Generates body for the collidable based on its sprite
     def set_body(self, x=0, y=0, density=1, body_type='dynamic', shape_type='box'):
-        if body_type is 'dynamic': # Calculate mass and moment for different shapes
+        if body_type is 'dynamic':  # Calculate mass and moment for different shapes
             mass = 0
             moment = 0
             if shape_type is 'box':
@@ -65,9 +63,13 @@ class Collidable:
     # Generates shape for the collidable based on its sprite
     def set_shape(self, shape_type='box'):
         if shape_type is 'box':
-            self.shape = pymunk.Poly.create_box(self.body, self.sprite.get_size(), 0.01)
+            self.shape = pymunk.Poly.create_box(self.body, self.sprite.get_size(), 0)
         elif shape_type is 'circle':
             radius = min(self.sprite.get_width(), self.sprite.get_height()) / 2
             self.shape = pymunk.Circle(self.body, radius)
         else:
             raise AttributeError("(!) Error: creating shape of invalid type")
+
+    # Returns this collidable's position in world coordinates
+    def get_position(self):
+        return self.body.position

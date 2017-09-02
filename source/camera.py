@@ -24,7 +24,7 @@ class Camera:
     """
 
     def __init__(self, view_width, view_height, x=0, y=0):
-        self.view_width = view_width # Basically window size
+        self.view_width = view_width  # Basically window size
         self.view_height = view_height
         self.x = x  # These are world coordinates for the center of the camera's view
         self.y = y
@@ -33,7 +33,7 @@ class Camera:
     def world_to_viewport(self, world_coordinates):
         coordinate_x = world_coordinates[0] - self.x + self.view_width / 2
         coordinate_y = world_coordinates[1] - self.y + self.view_height / 2
-        return coordinate_x, coordinate_y
+        return int(coordinate_x), int(coordinate_y)
 
     # Points camera at specific coordinates in the world
     def point_at(self, x, y):

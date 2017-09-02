@@ -19,16 +19,24 @@
 """
 
 try:
-    from physics import Physics
     import sys
+    from physics import Physics
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
 class World:
     """
-    Class that includes all objects in a level
+    Class that includes all objects in a level and handles interaction between them
     """
 
     def __init__(self):
         self.physics = Physics() # Add a physics handler
+
+    # Updates the whole world by one frame
+    def update(self, fps):
+        self.physics.update(fps)  # Update physics
+
+    # Adds a collidable to the physical simulation
+    def add_collidable(self, collidable):
+        self.physics.add_collidable(collidable)
