@@ -18,10 +18,18 @@
     Copyright(C) 2017 Oleksii Davydenko
 """
 
-class Collidable:
+try:
+    import pygame
+    import sys
+except ImportError as exc:
+    print("(!) Could not load module {}, exiting...".format(exc))
+    sys.exit(-1)
+
+class Player:
     """
-    Class that represents a physical object in the game
+    Class that handles player's car in-game
     """
 
-    pass
-    # def __init__(self, x, y, ):
+    def __init__(self):
+        self.pos = (100,100) # TEMP
+        self.sprite = pygame.image.load("../resources/images/player_car.png").convert_alpha()

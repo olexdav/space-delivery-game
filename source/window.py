@@ -20,12 +20,15 @@
 
 try:
     import pygame
+    import sys
+    from camera import Camera
 except ImportError as exc:
-    print("Could not load module {}.".format(exc))
+    print("(!) Could not load module {}, exiting...".format(exc))
+    sys.exit(-1)
 
 class Window():
     """
-    Class that handles window creation and resizing
+    Class that handles window creation, resizing and rendering
     """
 
     def __init__(self, width=800, height=600, caption="untitled", flags=0, icon=None):
@@ -35,14 +38,28 @@ class Window():
         pygame.display.set_caption(caption)
         self.rect = self.screen.get_rect()
         if icon is not None: pygame.display.set_icon(icon)
+        self.camera = Camera()
+
+    # Fills window with color
+    def fill(self, color):
+        self.screen.fill(color)
+
+    # Draws a sprite onto the screen
+    def draw(self, sprite, world_coordinates):
+        x, y = self.camera.world_to_viewport(world_coordinates) # Convert coordinates to viewport
+        x -= sprite.get_width()/2 # Align coordinates
+        y -= sprite.get_height()/2 # so the sprite's pivot is centered
+        self.screen.blit(sprite, (x,y))
 
     def update(self):
         #pygame.display.flip()
         pygame.display.update(self.rect)
 
-    def get_resolution(self):
+    @staticmethod
+    def get_resolution():
         return pygame.display.get_surface().get_size()
 
+    # Toggles fullscreen without changing resolution
     def toggle_fullscreen(self):
         if self.fullscreen is False:
             self.screen = pygame.display.set_mode(self.resolution, pygame.FULLSCREEN)

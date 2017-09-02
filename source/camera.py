@@ -22,5 +22,11 @@ class Camera:
     """
     Utility  class for a camera that follows the player
     """
+
     def __init__(self):
         pass
+
+    # Converts world coordinates to viewport coordinates
+    @staticmethod
+    def world_to_viewport(world_coordinates):
+        return world_coordinates # TEMP
