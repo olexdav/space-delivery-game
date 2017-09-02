@@ -18,24 +18,22 @@
     Copyright(C) 2017 Oleksii Davydenko
 """
 
-class Camera:
+try:
+    import pymunk
+    import sys
+except ImportError as exc:
+    print("(!) Could not load module {}, exiting...".format(exc))
+    sys.exit(-1)
+
+class Physics:
     """
-    Utility class for a camera that follows the player
+    A handler for all physics in the game
     """
 
-    def __init__(self, view_width, view_height, x=0, y=0):
-        self.view_width = view_width # Basically window size
-        self.view_height = view_height
-        self.x = x  # These are world coordinates for the center of the camera's view
-        self.y = y
+    def __init__(self):
+        self.space = pymunk.Space()    # Create a Space which contains the simulation
+        self.space.gravity = 0, -1000  # Set its gravity
 
-    # Converts world coordinates to viewport coordinates
-    def world_to_viewport(self, world_coordinates):
-        coordinate_x = world_coordinates[0] - self.x + self.view_width / 2
-        coordinate_y = world_coordinates[1] - self.y + self.view_height / 2
-        return coordinate_x, coordinate_y
-
-    # Points camera at specific coordinates in the world
-    def point_at(self, x, y):
-        self.x = x
-        self.y = y
+    # Adds a collidable to the simulation
+    def add_collidable(self, collidable):
+        pass

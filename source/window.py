@@ -38,7 +38,7 @@ class Window():
         pygame.display.set_caption(caption)
         self.rect = self.screen.get_rect()
         if icon is not None: pygame.display.set_icon(icon)
-        self.camera = Camera()
+        self.camera = Camera(width, height)
 
     # Fills window with color
     def fill(self, color):
@@ -67,3 +67,7 @@ class Window():
         elif self.fullscreen:
             self.screen = pygame.display.set_mode(self.resolution)
             self.fullscreen = False
+
+    # Changes resolution of the window
+    def change_resolution(self, width, height):
+        pass

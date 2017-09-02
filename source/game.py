@@ -23,6 +23,7 @@ try:
     import sys
     from window import Window
     from player import Player
+    from world import World
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
@@ -59,6 +60,7 @@ class Game:
     # Initializes things that are global in the scope of the game
     def init(self):
         self.player = Player() # Load player
+        self.world = World() # Create world
 
     # Initializes pygame
     def init_pygame(self):
@@ -74,7 +76,7 @@ class Game:
         while not pygame.event.peek(pygame.QUIT):
             pass # Update current state
             self.window.fill((130, 200, 100)) # Draw background
-            self.window.draw(self.player.sprite, (0,0)) # Draw player
+            self.window.draw(self.player.car.sprite, (0,0)) # Draw player
             self.window.update() # Update the window
             pass # Update physics
             self.clock.tick(self.fps)  # Limit fps

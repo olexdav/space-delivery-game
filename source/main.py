@@ -19,10 +19,11 @@
 """
 
 try:
-    #import pygame, sys, time
+    import sys
     from game import Game
 except ImportError as exc:
-    print("Could not load module {}.".format(exc))
+    print("(!) Could not load module {}, exiting...".format(exc))
+    sys.exit(-1)
 
 def main():
     game = Game()

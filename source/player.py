@@ -19,7 +19,7 @@
 """
 
 try:
-    import pygame
+    from collidable import Collidable
     import sys
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
@@ -31,5 +31,9 @@ class Player:
     """
 
     def __init__(self):
-        self.pos = (100,100) # TEMP
-        self.sprite = pygame.image.load("../resources/images/player_car.png").convert_alpha()
+        self.car = Collidable(image_dir="../resources/images/player_car.png",
+                              x=0,
+                              y=0,
+                              density=1,
+                              body_type='dynamic',
+                              shape_type='box')
