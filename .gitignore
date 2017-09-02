@@ -1,4 +1,6 @@
 # PyCHARM files
 source/.idea
+# virtual environment
+venv
 # cache
 source/__pycache__

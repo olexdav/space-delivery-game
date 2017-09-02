@@ -24,6 +24,10 @@ except ImportError as exc:
     print("Could not load module {}.".format(exc))
 
 class Window():
+    """
+    Class that handles window creation and resizing
+    """
+
     def __init__(self, width=800, height=600, caption="untitled", flags=0, icon=None):
         self.resolution = [width, height]
         self.fullscreen = False
@@ -31,12 +35,15 @@ class Window():
         pygame.display.set_caption(caption)
         self.rect = self.screen.get_rect()
         if icon is not None: pygame.display.set_icon(icon)
+
     def update(self):
         #pygame.display.flip()
         pygame.display.update(self.rect)
-    def getResolution(self):
+
+    def get_resolution(self):
         return pygame.display.get_surface().get_size()
-    def toggleFullscreen(self):
+
+    def toggle_fullscreen(self):
         if self.fullscreen is False:
             self.screen = pygame.display.set_mode(self.resolution, pygame.FULLSCREEN)
             self.fullscreen = True

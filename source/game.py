@@ -34,20 +34,21 @@ class Game:
     def __init__(self, fps=60):
         self.fps = fps
         self.clock = pygame.time.Clock() # a clock to keep track of time
+        self.window = None
 
     # Initializes everything and starts main game loop
     def run(self):
-        self.createWindow()
-        self.showLoadingScreen()
+        self.create_window()
+        self.show_loading_screen()
         self.init()
-        self.mainLoop()
+        self.main_loop()
 
     # Creates a pygame window
-    def createWindow(self):
+    def create_window(self):
         self.window = Window(800, 600, "space-delivery-game", 0)
 
     # Displays a splash screen
-    def showLoadingScreen(self):
+    def show_loading_screen(self):
         pass
 
     # Initializes things that are global in the scope of the game
@@ -55,11 +56,11 @@ class Game:
         pass
 
     # Runs the game frame by frame
-    def mainLoop(self):
+    def main_loop(self):
         while not pygame.event.peek(pygame.QUIT):
-            self.clock.tick(self.fps)  # Limit the fps
             pass # Update current state
             pass # Update the window
+            self.clock.tick(self.fps)  # Limit the fps
             # Show current fps in the window title
             pygame.display.set_caption("space-delivery-game {ver} fps: {fps}".format(ver=GAME_VERSION,
                                                                                     fps=str(int(self.clock.get_fps()))))
