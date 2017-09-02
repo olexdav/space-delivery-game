@@ -24,6 +24,7 @@ try:
     from window import Window
     from player import Player
     from world import World
+    from inputhandler import InputHandler
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
@@ -40,6 +41,7 @@ class Game:
         self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
         self.player = None
+        self.input_handler = InputHandler()
 
     # Initializes everything and starts main game loop
     def run(self):
@@ -88,16 +90,16 @@ class Game:
 
     # Handles all input
     def handle_input(self):
-        for event in pygame.event.get():
-            if event.type is pygame.KEYDOWN:
-                if event.key is ord('w'):    # Accelerate
-                    self.player.accelerate()
-                elif event.key is ord('s'):  # Decelerate
-                    self.player.decelerate()
-                elif event.key is ord('a'):  # Steer left
-                    self.player.steer_left()
-                elif event.key is ord('d'):  # Steer right
-                    self.player.steer_right()
+        self.input_handler.update()  # Update input handler
+        # Control player
+        if self.input_handler.keypress[ord('w')]:    # Accelerate
+            self.player.accelerate()
+        elif self.input_handler.keypress[ord('s')]:  # Decelerate
+            self.player.decelerate()
+        if self.input_handler.keypress[ord('a')]:  # Steer left
+            self.player.steer_left()
+        elif self.input_handler.keypress[ord('d')]:  # Steer right
+            self.player.steer_right()
 
     # Renders everything
     def render(self):

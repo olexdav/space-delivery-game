@@ -40,20 +40,20 @@ class Player:
 
     # Accelerates the car forward
     def accelerate(self):
-        self.car.body.apply_impulse_at_local_point(impulse=(0, -1000000), point=(0, 0))
+        self.car.body.apply_impulse_at_local_point(impulse=(0, -100000), point=(0, 0))
 
     # Decelerates the car
     def decelerate(self):
-        self.car.body.apply_impulse_at_local_point(impulse=(0, 1000000), point=(0, 0))
+        self.car.body.apply_impulse_at_local_point(impulse=(0, 100000), point=(0, 0))
         # TODO: make sure the car's velocity never drops below zero (no backpedaling)
 
     # Steers the car to the right
     def steer_right(self):
-        self.car.body.apply_impulse_at_local_point(impulse=(100000, 0), point=(0, -70))
-        self.car.body.apply_impulse_at_local_point(impulse=(-100000, 0), point=(0, 70))
+        self.car.body.apply_impulse_at_local_point(impulse=(10000, 0), point=(0, -70)) # Front left thruster
+        self.car.body.apply_impulse_at_local_point(impulse=(-10000, 0), point=(0, 70)) # Back right thruster
 
     # Steers the car to the left
     def steer_left(self):
-        self.car.body.apply_impulse_at_local_point(impulse=(-100000, 0), point=(0, -70))
-        self.car.body.apply_impulse_at_local_point(impulse=(100000, 0), point=(0, 70))
+        self.car.body.apply_impulse_at_local_point(impulse=(-10000, 0), point=(0, -70))  # Front right thruster
+        self.car.body.apply_impulse_at_local_point(impulse=(10000, 0), point=(0, 70))    # Back left thruster
 
