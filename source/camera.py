@@ -28,6 +28,7 @@ class Camera:
         self.view_height = view_height
         self.x = x  # These are world coordinates for the center of the camera's view
         self.y = y
+        self.following = None  # Collidable that the camera is following
 
     def world_to_viewport(self, world_coordinates):
         """Converts world coordinates to viewport coordinates"""
@@ -39,3 +40,16 @@ class Camera:
         """Points camera at specific coordinates in the world"""
         self.x = x
         self.y = y
+
+    def follow(self, collidable):
+        """Sets the camera to start following a collidable"""
+        self.following = collidable
+
+    def unfollow(self):
+        """Orders the camera to stop following a collidable"""
+        self.following = None
+
+    def update(self):
+        """Updates camera position (following a collidable)"""
+        if self.following:
+            self.point_at(*(self.following.get_position()))

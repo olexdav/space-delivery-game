@@ -40,6 +40,7 @@ class Game:
         self.fps = fps
         self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
+        self.world = None
         self.player = None
         self.input_handler = InputHandler()
 
@@ -55,7 +56,7 @@ class Game:
 
     def create_window(self):
         """Creates a pygame window"""
-        self.window = Window(800, 600, "space-delivery-game", 0)
+        self.window = Window(1366, 768, "space-delivery-game", 0)
 
     def show_loading_screen(self):
         """Displays a splash screen"""
@@ -63,9 +64,9 @@ class Game:
 
     def init(self):
         """Initializes things that are global in the scope of the gam"""
-        self.player = Player()  # Load player
-        self.world = World()  # Create world
-        self.world.add_collidable(self.player.car)  # Add player to the world
+        self.world = World()           # Create world
+        self.world.build_from_level()  # Add level to the world
+        self.spawn_player()            # Add player to the world
 
     def init_pygame(self):
         """Initializes pygame"""
@@ -82,6 +83,7 @@ class Game:
             pass  # Update current state
             self.handle_input()  # Handle input
             self.world.update(self.fps)  # Update world (physics, etc.)
+            self.window.camera.update()  # Move the camera
             self.render() # Draw everything
             self.clock.tick(self.fps)  # Limit fps
             # Show current fps in the window title
@@ -96,7 +98,7 @@ class Game:
             self.player.accelerate()
         elif self.input_handler.keypress[ord('s')]:  # Decelerate
             self.player.decelerate()
-        if self.input_handler.keypress[ord('a')]:  # Steer left
+        if self.input_handler.keypress[ord('a')]:    # Steer left
             self.player.steer_left()
         elif self.input_handler.keypress[ord('d')]:  # Steer right
             self.player.steer_right()
@@ -104,5 +106,13 @@ class Game:
     def render(self):
         """Renders everything"""
         self.window.fill((130, 200, 100))  # Draw background
+        self.world.render(self.window)  # Draw the world
         self.window.draw_collidable(self.player.car)  # Draw player
         self.window.update()  # Update the window
+
+    def spawn_player(self):
+        """Creates a player and adds him to the world"""
+        self.player = Player()  # Load player
+        self.player.car.place(*(self.world.level.get_player_spawn()))  # Place player at the spawn
+        self.world.add_collidable(self.player.car)  # Add player to the world
+        self.window.camera.follow(self.player.car)  # Follow player with the camera
