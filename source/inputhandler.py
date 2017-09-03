@@ -36,6 +36,7 @@ class InputHandler:
         self.keypress = dict(zip(self.keys, values))  # { ord('a'): False, ord('b'): False, ... }
 
     def update(self):
+        """Updates keypress events"""
         for event in pygame.event.get():
             if event.type is pygame.KEYDOWN:
                 for key in self.keys:

@@ -43,8 +43,8 @@ class Game:
         self.player = None
         self.input_handler = InputHandler()
 
-    # Initializes everything and starts main game loop
     def run(self):
+        """Initializes everything and starts main game loop"""
         self.init_pygame()          # Initialize engine
         self.create_window()        # Create app window
         self.show_loading_screen()  # Show splash screen
@@ -53,22 +53,22 @@ class Game:
         pygame.quit()               # Exit game
         sys.exit()
 
-    # Creates a pygame window
     def create_window(self):
+        """Creates a pygame window"""
         self.window = Window(800, 600, "space-delivery-game", 0)
 
-    # Displays a splash screen
     def show_loading_screen(self):
+        """Displays a splash screen"""
         pass
 
-    # Initializes things that are global in the scope of the game
     def init(self):
+        """Initializes things that are global in the scope of the gam"""
         self.player = Player()  # Load player
         self.world = World()  # Create world
         self.world.add_collidable(self.player.car)  # Add player to the world
 
-    # Initializes pygame
     def init_pygame(self):
+        """Initializes pygame"""
         check_errors = pygame.init()
         if check_errors[1] > 0:
             print("(!) Had {0} errors initializing PyGame, exiting...".format(check_errors[1]))
@@ -76,8 +76,8 @@ class Game:
         else:
             print("(+) PyGame successfully initialized!")
 
-    # Runs the game frame by frame
     def main_loop(self):
+        """Runs the game frame by frame"""
         while not pygame.event.peek(pygame.QUIT):
             pass  # Update current state
             self.handle_input()  # Handle input
@@ -88,8 +88,8 @@ class Game:
             pygame.display.set_caption("space-delivery-game {ver} fps: {fps}".format(ver=GAME_VERSION,
                                                                                     fps=str(int(self.clock.get_fps()))))
 
-    # Handles all input
     def handle_input(self):
+        """Handles all input"""
         self.input_handler.update()  # Update input handler
         # Control player
         if self.input_handler.keypress[ord('w')]:    # Accelerate
@@ -101,8 +101,8 @@ class Game:
         elif self.input_handler.keypress[ord('d')]:  # Steer right
             self.player.steer_right()
 
-    # Renders everything
     def render(self):
+        """Renders everything"""
         self.window.fill((130, 200, 100))  # Draw background
         self.window.draw_collidable(self.player.car)  # Draw player
         self.window.update()  # Update the window

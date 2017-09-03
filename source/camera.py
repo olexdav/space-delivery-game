@@ -29,13 +29,13 @@ class Camera:
         self.x = x  # These are world coordinates for the center of the camera's view
         self.y = y
 
-    # Converts world coordinates to viewport coordinates
     def world_to_viewport(self, world_coordinates):
+        """Converts world coordinates to viewport coordinates"""
         coordinate_x = world_coordinates[0] - self.x + self.view_width / 2
         coordinate_y = world_coordinates[1] - self.y + self.view_height / 2
         return int(coordinate_x), int(coordinate_y)
 
-    # Points camera at specific coordinates in the world
     def point_at(self, x, y):
+        """Points camera at specific coordinates in the world"""
         self.x = x
         self.y = y

@@ -40,22 +40,22 @@ class Player:
 
     # TODO: movement methods should be transferred to a separate Car class so the AI can make use of them
 
-    # Accelerates the car forward
     def accelerate(self):
+        """Accelerates the car forward"""
         self.car.body.apply_impulse_at_local_point(impulse=(0, -100000), point=(0, 0))
 
-    # Decelerates the car
     def decelerate(self):
+        """Decelerates the car"""
         self.car.body.apply_impulse_at_local_point(impulse=(0, 100000), point=(0, 0))
         # TODO: make sure the car's velocity never drops below zero (no backpedaling)
 
-    # Steers the car to the right
     def steer_right(self):
+        """Steers the car to the right"""
         self.car.body.apply_impulse_at_local_point(impulse=(10000, 0), point=(0, -70)) # Front left thruster
         self.car.body.apply_impulse_at_local_point(impulse=(-10000, 0), point=(0, 70)) # Back right thruster
 
-    # Steers the car to the left
     def steer_left(self):
+        """Steers the car to the left"""
         self.car.body.apply_impulse_at_local_point(impulse=(-10000, 0), point=(0, -70))  # Front right thruster
         self.car.body.apply_impulse_at_local_point(impulse=(10000, 0), point=(0, 70))    # Back left thruster
 

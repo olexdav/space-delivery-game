@@ -38,8 +38,8 @@ class Collidable:
         self.shape = None
         self.set_shape(shape_type)  # Shape of the body
 
-    # Generates body for the collidable based on its sprite
     def set_body(self, x=0, y=0, density=1, body_type='dynamic', shape_type='box'):
+        """Generates body for the collidable based on its sprite"""
         if body_type is 'dynamic':  # Calculate mass and moment for different shapes
             mass = 0
             moment = 0
@@ -60,8 +60,8 @@ class Collidable:
         else:
             raise AttributeError("(!) Error: creating body of invalid type")
 
-    # Generates shape for the collidable based on its sprite
     def set_shape(self, shape_type='box'):
+        """Generates shape for the collidable based on its sprite"""
         if shape_type is 'box':
             self.shape = pymunk.Poly.create_box(self.body, self.sprite.get_size(), 0)
         elif shape_type is 'circle':
@@ -70,6 +70,6 @@ class Collidable:
         else:
             raise AttributeError("(!) Error: creating shape of invalid type")
 
-    # Returns this collidable's position in world coordinates
     def get_position(self):
+        """Returns this collidable's position in world coordinates"""
         return self.body.position

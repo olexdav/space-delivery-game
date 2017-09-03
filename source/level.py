@@ -36,6 +36,7 @@ class Level:
         self.grid_size = 1000     # Size of each cell on the map grid in pixels (50px is approximately 1 meter)
 
     def generate_test_level(self):
+        """Generates a basic level"""
         # Looks     #---#
         # like      |   |
         # this: #---#---#

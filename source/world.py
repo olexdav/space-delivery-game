@@ -36,10 +36,10 @@ class World:
         self.level = Level()      # Add a level layout
         self.level.generate_test_level()  # DEBUG: create a test level
 
-    # Updates the whole world by one frame
     def update(self, fps):
+        """Updates the whole world by one frame"""
         self.physics.update(fps)  # Update physics
 
-    # Adds a collidable to the physical simulation
     def add_collidable(self, collidable):
+        """Adds a collidable to the physical simulation"""
         self.physics.add_collidable(collidable)

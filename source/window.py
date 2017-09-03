@@ -41,12 +41,12 @@ class Window():
         if icon is not None: pygame.display.set_icon(icon)
         self.camera = Camera(width, height)
 
-    # Fills window with color
     def fill(self, color):
+        """Fills window with color"""
         self.screen.fill(color)
 
-    # Draws a sprite onto the screen
     def draw(self, sprite, world_coordinates):
+        """Draws a sprite onto the screen"""
         x, y = self.camera.world_to_viewport(world_coordinates)  # Convert coordinates to viewport
         x -= sprite.get_width()/2   # Align coordinates
         y -= sprite.get_height()/2  # so the sprite's pivot is centered
@@ -60,8 +60,8 @@ class Window():
     def get_resolution():
         return pygame.display.get_surface().get_size()
 
-    # Toggles fullscreen without changing resolution
     def toggle_fullscreen(self):
+        """Toggles fullscreen without changing resolution"""
         if self.fullscreen is False:
             self.screen = pygame.display.set_mode(self.resolution, pygame.FULLSCREEN)
             self.fullscreen = True
@@ -69,12 +69,12 @@ class Window():
             self.screen = pygame.display.set_mode(self.resolution)
             self.fullscreen = False
 
-    # Changes resolution of the window
     def change_resolution(self, width, height):
+        """Changes resolution of the window"""
         pass
 
-    # Draws a collidable
     def draw_collidable(self, collidable):
+        """Draws a collidable"""
         # TODO: only draw collidables that are close to the viewport
         angle_degrees = math.degrees(-collidable.body.angle)                # Get sprite's direction
         sprite = pygame.transform.rotate(collidable.sprite, angle_degrees)  # Rotate the sprite

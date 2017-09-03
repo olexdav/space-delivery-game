@@ -34,16 +34,12 @@ class Physics:
         self.space = pymunk.Space()  # Create a Space which contains the simulation
         self.space.gravity = 0, 0    # Set its gravity
 
-    # Adds a collidable to the simulation
-    def add_collidable(self, collidable):
-        pass
-
-    # Updates the entire simulation
     def update(self, fps):
+        """Updates the entire simulation"""
         dt = 1.0 / fps / 2.0
         for x in range(2):
             self.space.step(dt)  # make two updates per frame for better stability
 
-    # Adds a collidable to the physical simulation
     def add_collidable(self, collidable):
+        """Adds a collidable to the physical simulation"""
         self.space.add(collidable.body, collidable.shape)
