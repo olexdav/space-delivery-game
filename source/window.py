@@ -76,11 +76,11 @@ class Window():
     def draw_collidable(self, collidable):
         """Draws a collidable"""
         # Only draw collidables that are close to the viewport
-
-        angle_degrees = math.degrees(-collidable.body.angle)                # Get sprite's direction
-        sprite = pygame.transform.rotate(collidable.sprite, angle_degrees)  # Rotate the sprite
-        self.draw(sprite, collidable.get_position())                        # Draw the sprite
-        # DEBUG: draw center of the collidable
-        coord = self.camera.world_to_viewport(collidable.get_position())
-        pygame.draw.circle(self.screen, pygame.Color(255, 255, 255, 255),
-                           coord, 5, 0)
+        if self.camera.near_viewport(collidable.get_position()):
+            angle_degrees = math.degrees(-collidable.body.angle)                # Get sprite's direction
+            sprite = pygame.transform.rotate(collidable.sprite, angle_degrees)  # Rotate the sprite
+            self.draw(sprite, collidable.get_position())                        # Draw the sprite
+            # DEBUG: draw center of the collidable
+            coord = self.camera.world_to_viewport(collidable.get_position())
+            pygame.draw.circle(self.screen, pygame.Color(255, 255, 255, 255),
+                               coord, 5, 0)

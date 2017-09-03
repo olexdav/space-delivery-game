@@ -53,3 +53,14 @@ class Camera:
         """Updates camera position (following a collidable)"""
         if self.following:
             self.point_at(*(self.following.get_position()))
+
+    def near_viewport(self, position):
+        """Returns true if the position(world coordinates) is close to the viewport and can be rendered"""
+        view_x, view_y = self.world_to_viewport(position)
+        margin = 600  # Distance in pixels, any object that is further from the viewport will be ignored
+        if view_x < -margin or view_y < -margin:
+            return False
+        elif view_x > self.view_width + margin or view_y > self.view_height + margin:
+            return False
+        else:
+            return True
