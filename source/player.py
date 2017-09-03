@@ -25,11 +25,11 @@ except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
+
 class Player:
     """
     Class that handles player's car in-game
     """
-
     def __init__(self):
         self.car = Collidable(image_dir="../resources/images/player_car.png",
                               x=0,
@@ -37,6 +37,8 @@ class Player:
                               density=1,
                               body_type='dynamic',
                               shape_type='box')
+
+    # TODO: movement methods should be transferred to a separate Car class so the AI can make use of them
 
     # Accelerates the car forward
     def accelerate(self):

@@ -25,11 +25,11 @@ except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
+
 class Physics:
     """
     A handler for all physics in the game
     """
-
     def __init__(self):
         self.space = pymunk.Space()  # Create a Space which contains the simulation
         self.space.gravity = 0, 0    # Set its gravity

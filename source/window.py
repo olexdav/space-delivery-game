@@ -23,16 +23,15 @@ try:
     import math  # Need this for math.degrees()
     import sys
     from camera import Camera
-    #from collidable import Collidable
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
+
 
 class Window():
     """
     Class that handles window creation, resizing and rendering of various objects
     """
-
     def __init__(self, width=800, height=600, caption="untitled", flags=0, icon=None):
         self.resolution = [width, height]
         self.fullscreen = False
@@ -54,7 +53,7 @@ class Window():
         self.screen.blit(sprite, (x,y))
 
     def update(self):
-        #pygame.display.flip()
+        # pygame.display.flip()
         pygame.display.update(self.rect)
 
     @staticmethod

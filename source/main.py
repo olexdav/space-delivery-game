@@ -25,6 +25,7 @@ except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
+
 def main():
     game = Game()
     game.run()

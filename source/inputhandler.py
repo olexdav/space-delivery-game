@@ -25,11 +25,11 @@ except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
+
 class InputHandler:
     """
     Class that builds on top of pygame to provide advanced input processing
     """
-
     def __init__(self):
         self.keys = range(ord('a'), ord('z')+1)  # Keys that are being monitored by handler
         values = [False] * len(self.keys)        # Values are true when keys are pressed (between key down and key up)

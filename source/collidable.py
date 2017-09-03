@@ -26,11 +26,11 @@ except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
 
+
 class Collidable:
     """
     Class that represents a physical object in the game
     """
-
     def __init__(self, image_dir, x=0, y=0, density=1, body_type='dynamic', shape_type='box'):
         self.sprite = pygame.image.load(image_dir).convert_alpha()  # Surface with the collidable's image
         self.body = None

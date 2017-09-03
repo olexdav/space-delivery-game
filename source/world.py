@@ -21,17 +21,20 @@
 try:
     import sys
     from physics import Physics
+    from level import Level
 except ImportError as exc:
     print("(!) Could not load module {}, exiting...".format(exc))
     sys.exit(-1)
+
 
 class World:
     """
     Class that includes all objects in a level and handles interaction between them
     """
-
     def __init__(self):
-        self.physics = Physics() # Add a physics handler
+        self.physics = Physics()  # Add a physics handler
+        self.level = Level()      # Add a level layout
+        self.level.generate_test_level()  # DEBUG: create a test level
 
     # Updates the whole world by one frame
     def update(self, fps):

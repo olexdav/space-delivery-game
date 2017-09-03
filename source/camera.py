@@ -18,11 +18,11 @@
     Copyright(C) 2017 Oleksii Davydenko
 """
 
+
 class Camera:
     """
     Utility class for a camera that follows the player
     """
-
     def __init__(self, view_width, view_height, x=0, y=0):
         self.view_width = view_width  # Basically window size
         self.view_height = view_height

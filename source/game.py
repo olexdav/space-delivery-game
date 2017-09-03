@@ -31,11 +31,11 @@ except ImportError as exc:
 
 GAME_VERSION = "v0.1"
 
+
 class Game:
     """
     Class that describes the general game logic
     """
-
     def __init__(self, fps=60):
         self.fps = fps
         self.clock = pygame.time.Clock()  # Clock to keep track of time
