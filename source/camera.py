@@ -18,6 +18,12 @@
     Copyright(C) 2017 Oleksii Davydenko
 """
 
+try:
+    import pymunk  # Need this for Vec2d
+    import sys
+except ImportError as exc:
+    print("(!) Could not load module {}, exiting...".format(exc))
+    sys.exit(-1)
 
 class Camera:
     """
@@ -28,31 +34,54 @@ class Camera:
         self.view_height = view_height
         self.x = x  # These are world coordinates for the center of the camera's view
         self.y = y
-        self.following = None  # Collidable that the camera is following
+        self.angle = 0  # Angle of camera rotation
+        self.rotate_towards = 0  # Angle that the camera rotates towards
+        self.rotation_speed = 90  # Degrees per second
+        self.collidable_to_follow = None  # Collidable that the camera is following
+        self.player_to_follow = None  # Player that the camera is following
 
     def world_to_viewport(self, world_coordinates):
         """Converts world coordinates to viewport coordinates"""
-        coordinate_x = world_coordinates[0] - self.x + self.view_width / 2
-        coordinate_y = world_coordinates[1] - self.y + self.view_height / 2
-        return int(coordinate_x), int(coordinate_y)
+        coordinate_x = world_coordinates[0] - self.x
+        coordinate_y = world_coordinates[1] - self.y
+        vec = pymunk.Vec2d(coordinate_x, coordinate_y)
+        vec.rotate_degrees(-self.angle)
+        vec.x += self.view_width / 2
+        vec.y += self.view_height / 2
+        return int(vec.x), int(vec.y)
 
     def point_at(self, x, y):
         """Points camera at specific coordinates in the world"""
         self.x = x
         self.y = y
 
-    def follow(self, collidable):
+    def follow_collidable(self, collidable):
         """Sets the camera to start following a collidable"""
-        self.following = collidable
+        self.collidable_to_follow = collidable
 
-    def unfollow(self):
-        """Orders the camera to stop following a collidable"""
-        self.following = None
+    def follow_player(self, player):
+        """Sets the camera to start following a player"""
+        self.player_to_follow = player
 
-    def update(self):
-        """Updates camera position (following a collidable)"""
-        if self.following:
-            self.point_at(*(self.following.get_position()))
+    def update(self, time_delta):
+        """Updates camera position (rotating, following things)"""
+        if self.collidable_to_follow:  # Follow collidable
+            self.point_at(*(self.collidable_to_follow.get_position()))
+        if self.player_to_follow:  # Follow player
+            world_x, world_y, angle = self.player_to_follow.get_data_for_camera()
+            self.point_at(world_x, world_y)  # Point at player's position
+            if angle:                        # Rotate if needed
+                self.rotate_towards = angle
+        if self.angle is not self.rotate_towards:  # Rotate with time
+            rotation = self.rotation_speed * time_delta
+            if self.angle < self.rotate_towards:
+                self.angle += rotation
+                if self.angle > self.rotate_towards:
+                    self.angle = self.rotate_towards
+            elif self.angle > self.rotate_towards:
+                self.angle -= rotation
+                if self.angle < self.rotate_towards:
+                    self.angle = self.rotate_towards
 
     def near_viewport(self, position):
         """Returns true if the position(world coordinates) is close to the viewport and can be rendered"""
@@ -64,3 +93,7 @@ class Camera:
             return False
         else:
             return True
+
+    def start_turn(self, angle_towards):
+        """Starts slowly turning the camera around"""
+        self.rotate_towards = angle_towards

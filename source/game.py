@@ -36,7 +36,7 @@ class Game:
     """
     Class that describes the general game logic
     """
-    def __init__(self, fps=60):
+    def __init__(self, fps=75):
         self.fps = fps
         self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
@@ -80,12 +80,13 @@ class Game:
     def main_loop(self):
         """Runs the game frame by frame"""
         while not pygame.event.peek(pygame.QUIT):
+            milliseconds = self.clock.tick(self.fps)  # Limit fps
+            time_delta = milliseconds / 1000.0  # Seconds passed since last frame
             pass  # Update current state
             self.handle_input()  # Handle input
-            self.world.update(self.fps)  # Update world (physics, etc.)
-            self.window.camera.update()  # Move the camera
+            self.world.update(time_delta)  # Update world (physics, etc.)
+            self.window.camera.update(time_delta)  # Move the camera
             self.render() # Draw everything
-            self.clock.tick(self.fps)  # Limit fps
             # Show current fps in the window title
             pygame.display.set_caption("space-delivery-game {ver} fps: {fps}".format(ver=GAME_VERSION,
                                                                                     fps=str(int(self.clock.get_fps()))))
@@ -102,6 +103,12 @@ class Game:
             self.player.steer_left()
         elif self.input_handler.keypress[ord('d')]:  # Steer right
             self.player.steer_right()
+        # TEMP
+        if self.input_handler.keypress[ord('e')]:
+            self.window.camera.start_turn(90)
+        if self.input_handler.keypress[ord('q')]:
+            self.window.camera.start_turn(0)
+        # /TEMP
 
     def render(self):
         """Renders everything"""
@@ -113,6 +120,6 @@ class Game:
     def spawn_player(self):
         """Creates a player and adds him to the world"""
         self.player = Player()  # Load player
-        self.player.car.place(*(self.world.level.get_player_spawn()))  # Place player at the spawn
+        self.player.place_in_level(self.world.level)  # Place player in the level
         self.world.add_collidable(self.player.car)  # Add player to the world
-        self.window.camera.follow(self.player.car)  # Follow player with the camera
+        self.window.camera.follow_player(self.player)  # Follow player with the camera

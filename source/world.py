@@ -38,9 +38,9 @@ class World:
         self.level.generate_test_level()  # DEBUG: create a test level
         self.walls = []
 
-    def update(self, fps):
+    def update(self, time_delta):
         """Updates the whole world by one frame"""
-        self.physics.update(fps)  # Update physics
+        self.physics.update(time_delta)  # Update physics
 
     def render(self, window):
         """Renders all world objects to the window"""

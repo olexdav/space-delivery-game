@@ -170,7 +170,7 @@ class Level:
             left = tunnel.get_left_bound()  # Get tunnel bounds
             right = tunnel.get_right_bound()
             y = tunnel.get_top_bound()
-            for x in range(left+1, right):
+            for x in range(left, right+1):
                 wall_x, wall_y = self.wall_coordinates(x, y, 'up')  # Make two walls for each cell
                 wall_positions.append((wall_x, wall_y, "Horizontal"))
                 wall_x, wall_y = self.wall_coordinates(x, y, 'down')
@@ -179,7 +179,7 @@ class Level:
             top = tunnel.get_top_bound()  # Get tunnel bounds
             bottom = tunnel.get_bottom_bound()
             x = tunnel.get_left_bound()
-            for y in range(top+1, bottom):
+            for y in range(top, bottom+1):
                 wall_x, wall_y = self.wall_coordinates(x, y, 'left')  # Make two walls for each cell
                 wall_positions.append((wall_x, wall_y, "Vertical"))
                 wall_x, wall_y = self.wall_coordinates(x, y, 'right')
@@ -209,7 +209,6 @@ class Level:
                     orientation = "Horizontal"
                 wall_positions.append((wall_x, wall_y, orientation))
         return wall_positions
-
 
     def wall_coordinates(self, x, y, type):
         """Returns world coordinates of a wall at level coordinates (x,y)
@@ -258,6 +257,21 @@ class Level:
             angle = 270
         return world_x, world_y, angle
 
+    def world_to_grid(self, world_x, world_y):
+        """Converts world coordinates to level grid coordinates"""
+        return int(world_x / self.grid_size), int(world_y / self.grid_size)
+
+    def get_tunnel_orientation(self, world_x, world_y):
+        """Determines the orientation of the tunnel at world coordinates"""
+        grid_x, grid_y = self.world_to_grid(world_x, world_y)
+        orientation = None
+        for tunnel in self.tunnels:
+            if tunnel.includes(grid_x, grid_y):
+                orientation = tunnel.orientation
+                break
+        return orientation
+
+
 class Tunnel:
     """
     A straight tunnel between two junctions
@@ -268,31 +282,37 @@ class Tunnel:
 
     def get_left_bound(self):
         """Returns the left bound of the tunnel in level coordinates"""
+        # Bounds DO NOT include junctions
         if self.orientation is "Vertical":
             return self.junctions[0].x
         elif self.orientation is "Horizontal":
-            return min(self.junctions[0].x, self.junctions[1].x)
+            return min(self.junctions[0].x, self.junctions[1].x)+1
 
     def get_right_bound(self):
         """Returns the right bound of the tunnel in level coordinates"""
         if self.orientation is "Vertical":
             return self.junctions[0].x
         elif self.orientation is "Horizontal":
-            return max(self.junctions[0].x, self.junctions[1].x)
+            return max(self.junctions[0].x, self.junctions[1].x)-1
 
     def get_top_bound(self):
         """Returns the top bound of the tunnel in level coordinates"""
         if self.orientation is "Horizontal":
             return self.junctions[0].y
         elif self.orientation is "Vertical":
-            return min(self.junctions[0].y, self.junctions[1].y)
+            return min(self.junctions[0].y, self.junctions[1].y)+1
 
     def get_bottom_bound(self):
         """Returns the bottom bound of the tunnel in level coordinates"""
         if self.orientation is "Horizontal":
             return self.junctions[0].y
         elif self.orientation is "Vertical":
-            return max(self.junctions[0].y, self.junctions[1].y)
+            return max(self.junctions[0].y, self.junctions[1].y)-1
+
+    def includes(self, grid_x, grid_y):
+        """Checks if the tunnel includes a particular grid cell"""
+        return self.get_left_bound() <= grid_x <= self.get_right_bound() \
+                and self.get_top_bound() <= grid_y <= self.get_bottom_bound()
 
 
 class Junction:

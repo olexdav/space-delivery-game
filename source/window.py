@@ -78,6 +78,7 @@ class Window():
         # Only draw collidables that are close to the viewport
         if self.camera.near_viewport(collidable.get_position()):
             angle_degrees = math.degrees(-collidable.body.angle)                # Get sprite's direction
+            angle_degrees += self.camera.angle                                  # Apply camera rotation
             sprite = pygame.transform.rotate(collidable.sprite, angle_degrees)  # Rotate the sprite
             self.draw(sprite, collidable.get_position())                        # Draw the sprite
             # DEBUG: draw center of the collidable
