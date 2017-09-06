@@ -20,6 +20,7 @@
 
 try:
     import pygame
+    import math  # Need this for math.degrees()
     import sys
     from window import Window
     from player import Player
@@ -36,7 +37,7 @@ class Game:
     """
     Class that describes the general game logic
     """
-    def __init__(self, fps=75):
+    def __init__(self, fps=60):
         self.fps = fps
         self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
@@ -56,7 +57,8 @@ class Game:
 
     def create_window(self):
         """Creates a pygame window"""
-        self.window = Window(1366, 768, "space-delivery-game", 0)
+        self.window = Window(1920, 1080, "space-delivery-game", 0)
+        self.window.toggle_fullscreen()
 
     def show_loading_screen(self):
         """Displays a splash screen"""
@@ -103,12 +105,6 @@ class Game:
             self.player.steer_left()
         elif self.input_handler.keypress[ord('d')]:  # Steer right
             self.player.steer_right()
-        # TEMP
-        if self.input_handler.keypress[ord('e')]:
-            self.window.camera.start_turn(90)
-        if self.input_handler.keypress[ord('q')]:
-            self.window.camera.start_turn(0)
-        # /TEMP
 
     def render(self):
         """Renders everything"""
@@ -123,3 +119,5 @@ class Game:
         self.player.place_in_level(self.world.level)  # Place player in the level
         self.world.add_collidable(self.player.car)  # Add player to the world
         self.window.camera.follow_player(self.player)  # Follow player with the camera
+        self.window.camera.start_turn(math.degrees(self.player.car.body.angle))  # Align camera with the player
+        #self.window.camera.angle = math.degrees(self.player.car.body.angle)  # Align camera with the player

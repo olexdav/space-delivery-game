@@ -44,22 +44,22 @@ class Player:
 
     def accelerate(self):
         """Accelerates the car forward"""
-        self.car.body.apply_force_at_local_point(force=(0, -5000000), point=(0, 0))
+        self.car.body.apply_force_at_local_point(force=(0, -8000000), point=(0, 0))
 
     def decelerate(self):
         """Decelerates the car"""
-        self.car.body.apply_force_at_local_point(force=(0, 5000000), point=(0, 0))
+        self.car.body.apply_force_at_local_point(force=(0, 8000000), point=(0, 0))
         # TODO: make sure the car's velocity never drops below zero (no backpedaling)
 
     def steer_right(self):
         """Steers the car to the right"""
-        self.car.body.apply_force_at_local_point(force=(500000, 0), point=(0, -70)) # Front left thruster
-        self.car.body.apply_force_at_local_point(force=(-500000, 0), point=(0, 70)) # Back right thruster
+        self.car.body.apply_force_at_local_point(force=(800000, 0), point=(0, -70)) # Front left thruster
+        self.car.body.apply_force_at_local_point(force=(-800000, 0), point=(0, 70)) # Back right thruster
 
     def steer_left(self):
         """Steers the car to the left"""
-        self.car.body.apply_force_at_local_point(force=(-500000, 0), point=(0, -70))  # Front right thruster
-        self.car.body.apply_force_at_local_point(force=(500000, 0), point=(0, 70))    # Back left thruster
+        self.car.body.apply_force_at_local_point(force=(-800000, 0), point=(0, -70))  # Front right thruster
+        self.car.body.apply_force_at_local_point(force=(800000, 0), point=(0, 70))    # Back left thruster
 
     def place_in_level(self, level):
         """Places player at the level's spawn"""
@@ -83,8 +83,16 @@ class Player:
         world_x = self.car.get_position().x  # TEMP
         world_y = self.car.get_position().y
         cam_angle = None
-        print(math.degrees(self.car.body.angle))
-        # TODO: write camera angle logic
-        #tunnel_orientation = self.determine_tunnel_orientation()
-        #if tunnel_orientation is "Horizontal"
+        car_angle = int(math.degrees(self.car.body.angle)) % 360
+        tunnel_orientation = self.determine_tunnel_orientation()
+        if tunnel_orientation is "Horizontal":
+            if 0 <= car_angle <= 180:
+                cam_angle = 90
+            else:
+                cam_angle = 270
+        elif tunnel_orientation is "Vertical":
+            if 90 <= car_angle <= 270:
+                cam_angle = 180
+            else:
+                cam_angle = 360
         return world_x, world_y, cam_angle

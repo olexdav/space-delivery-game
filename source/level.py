@@ -33,7 +33,8 @@ class Level:
         self.entry_point = None      # The point where player enters the level
         self.entry_direction = None  # Direction to the first tunnel that the player goes through
         # TODO: this should scale with screen resolution
-        self.grid_size = 1000        # Size of each cell on the map grid in pixels (50px is approximately 1 meter)
+        # This should always be equal to (wall sprite height - wall sprite width)
+        self.grid_size = 920        # Size of each cell on the map grid in pixels (50px is approximately 1 meter)
 
     def generate_test_level(self):
         """Generates a basic level"""
@@ -44,14 +45,15 @@ class Level:
         #       #---#---#   > - entry tunnel
         # TODO: write unit tests for the Level class
         # TODO: also unit tests for Collidable class
-        self.junctions.append(Junction(2, 0))
-        self.junctions.append(Junction(4, 0))
-        self.junctions.append(Junction(0, 2))
-        self.junctions.append(Junction(2, 2))
-        self.junctions.append(Junction(4, 2))
-        self.junctions.append(Junction(0, 4))
-        self.junctions.append(Junction(2, 4))
-        self.junctions.append(Junction(4, 4))
+        level_scale = 4  # Length of the tunnels (starts at 2)
+        self.junctions.append(Junction(level_scale, 0))
+        self.junctions.append(Junction(level_scale * 2, 0))
+        self.junctions.append(Junction(0, level_scale))
+        self.junctions.append(Junction(level_scale, level_scale))
+        self.junctions.append(Junction(level_scale * 2, level_scale))
+        self.junctions.append(Junction(0, level_scale * 2))
+        self.junctions.append(Junction(level_scale, level_scale * 2))
+        self.junctions.append(Junction(level_scale * 2, level_scale * 2))
         for x in range(10):
             self.tunnels.append(Tunnel())
         self.join_existing(0, 0, 1)

@@ -56,13 +56,14 @@ class Collidable:
         if body_type is 'dynamic':  # Calculate mass and moment for different shapes
             mass = 0
             moment = 0
+            MOMENT_FACTOR = 2.0  # Variable used for controlling the moment of bodies
             if shape_type is 'box':
                 mass = density * self.sprite.get_width() * self.sprite.get_height()
-                moment = self.sprite.get_width() * self.sprite.get_height() ** 3 / 12
+                moment = self.sprite.get_width() * self.sprite.get_height() ** 3 / 12 * MOMENT_FACTOR
             elif shape_type is 'circle':
                 radius = min(self.sprite.get_width(), self.sprite.get_height()) / 2
                 mass = density * 3.1415 * radius * radius
-                moment = 3.1415 * radius ** 4 / 4
+                moment = 3.1415 * radius ** 4 / 4 * MOMENT_FACTOR
             else:
                 raise ValueError("(!) Error: creating body of invalid shape")
             self.body = pymunk.Body(mass=mass, moment=moment, body_type=pymunk.Body.DYNAMIC)
