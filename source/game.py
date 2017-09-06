@@ -58,7 +58,7 @@ class Game:
     def create_window(self):
         """Creates a pygame window"""
         self.window = Window(1920, 1080, "space-delivery-game", 0)
-        self.window.toggle_fullscreen()
+        #self.window.toggle_fullscreen()
 
     def show_loading_screen(self):
         """Displays a splash screen"""
@@ -87,6 +87,7 @@ class Game:
             pass  # Update current state
             self.handle_input()  # Handle input
             self.world.update(time_delta)  # Update world (physics, etc.)
+            self.player.update(time_delta)  # Update the player
             self.window.camera.update(time_delta)  # Move the camera
             self.render() # Draw everything
             # Show current fps in the window title
