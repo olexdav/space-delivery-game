@@ -33,6 +33,7 @@ class Physics:
     def __init__(self):
         self.space = pymunk.Space()  # Create a Space which contains the simulation
         self.space.gravity = 0, 0    # Set its gravity
+        self.space.damping = 0.8     # How quickly things lose velocity
 
     def update(self, time_delta):
         """Updates the entire simulation"""

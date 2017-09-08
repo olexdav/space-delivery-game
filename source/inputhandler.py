@@ -32,15 +32,19 @@ class InputHandler:
     """
     def __init__(self):
         self.keys = range(ord('a'), ord('z')+1)  # Keys that are being monitored by handler
-        values = [False] * len(self.keys)        # Values are true when keys are pressed (between key down and key up)
-        self.keypress = dict(zip(self.keys, values))  # { ord('a'): False, ord('b'): False, ... }
+        values = [False] * len(self.keys)        # Values are true when keys are down/pressed
+        self.keydown = dict(zip(self.keys, values))   # { ord('a'): False, ord('b'): False, ... }
+        self.keypress = dict(zip(self.keys, values))  # Key press happens between key down and key up
 
     def update(self):
-        """Updates keypress events"""
-        for event in pygame.event.get():
+        """Updates keydown/keypress events"""
+        for key in self.keys:  # Drop key downs
+            self.keydown[key] = False
+        for event in pygame.event.get():  # Process events
             if event.type is pygame.KEYDOWN:
                 for key in self.keys:
-                    if (event.key == key):
+                    if event.key == key:
+                        self.keydown[key] = True
                         self.keypress[key] = True
             elif event.type is pygame.KEYUP:
                 for key in self.keys:

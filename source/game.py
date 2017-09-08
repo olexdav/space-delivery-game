@@ -37,7 +37,7 @@ class Game:
     """
     Class that describes the general game logic
     """
-    def __init__(self, fps=60):
+    def __init__(self, fps=75):
         self.fps = fps
         self.clock = pygame.time.Clock()  # Clock to keep track of time
         self.window = None
@@ -87,7 +87,7 @@ class Game:
             pass  # Update current state
             self.handle_input()  # Handle input
             self.world.update(time_delta)  # Update world (physics, etc.)
-            self.player.update(time_delta)  # Update the player
+            #self.player.update(time_delta)  # Update the player
             self.window.camera.update(time_delta)  # Move the camera
             self.render() # Draw everything
             # Show current fps in the window title
@@ -106,6 +106,12 @@ class Game:
             self.player.steer_left()
         elif self.input_handler.keypress[ord('d')]:  # Steer right
             self.player.steer_right()
+        # TEMP
+        if self.input_handler.keydown[ord('e')]:   # Turn right
+            self.player.turn_right()
+        if self.input_handler.keydown[ord('q')]:  # Turn left
+            self.player.turn_left()
+        # /TEMP
 
     def render(self):
         """Renders everything"""
@@ -117,8 +123,7 @@ class Game:
     def spawn_player(self):
         """Creates a player and adds him to the world"""
         self.player = Player()  # Load player
-        self.player.place_in_level(self.world.level)  # Place player in the level
-        self.world.add_collidable(self.player.car)  # Add player to the world
+        self.player.place_in_world(self.world)  # Place player in the world
         self.window.camera.follow_player(self.player)  # Follow player with the camera
         self.window.camera.start_turn(math.degrees(self.player.car.body.angle))  # Align camera with the player
         #self.window.camera.angle = math.degrees(self.player.car.body.angle)  # Align camera with the player

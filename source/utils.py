@@ -18,6 +18,7 @@
     Copyright(C) 2017 Oleksii Davydenko
 """
 
+
 def angle_difference(angle1, angle2):
     """Calculates difference between two angles, eliminating wrapping issues
 
